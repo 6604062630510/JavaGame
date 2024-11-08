@@ -74,9 +74,13 @@ class BattleStage extends JPanel {
     private MainGame mainGame;
     private JFrame battleFrame;
 
+    private AudioPlayer backgroundMusic;
     BattleStage(MainGame mainGame) {
         this.mainGame = mainGame;
         this.battleFrame = battleFrame;
+
+        backgroundMusic = new AudioPlayer("fight.wav");
+        backgroundMusic.loop();
 
         int randomScene = random.nextInt(2);
         int randomMonster = random.nextInt(3);
@@ -349,6 +353,7 @@ class BattleStage extends JPanel {
             showTired = true;
             mainGame.setLoseGame(true);
             battleTimer.stop();
+            backgroundMusic.stop();
         } else if (monsterLife <= 0) {
             showWin = true;
             showTired = false;
@@ -358,13 +363,17 @@ class BattleStage extends JPanel {
                 mainGame.changeWTmelon(1);
             }
             battleTimer.stop();
+            backgroundMusic.stop();
+
         }
     }
 
     private void endBattle() {
         battleTimer.stop();
+        backgroundMusic.stop();
         mainGame.setisBattleActive(false);
         mainGame.gameTimer.start();
+        mainGame.backgroundMusic.loop();
         SwingUtilities.getWindowAncestor(this).dispose();
     }
 

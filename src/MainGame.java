@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MainGame extends JPanel {
+    AudioPlayer backgroundMusic;
     private Image background = new ImageIcon(getClass().getResource("MainGameBG.png")).getImage();
     private ArrayList<Rectangle> wall = WallData.getRectangles(1000, 750);
     private ArrayList<Rectangle> pool = PoolData.getRectangles();
@@ -31,18 +32,26 @@ public class MainGame extends JPanel {
     private int checkTime = 0;
 
     public MainGame() {
+
         setFocusable(true);
         requestFocusInWindow();
         setLayout(null);
+
+        backgroundMusic = new AudioPlayer("game-music.wav");
+        backgroundMusic.loop();
+
+
         stopButton = new GameButton(stopIcon, 900, 20, 60, 60);
         stopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checkTime == 0) {
                     gameTimer.stop();
+                    backgroundMusic.stop();
                     checkTime = 1;
                 } else {
                     gameTimer.start();
+                    backgroundMusic.loop();
                     checkTime = 0;
                 }
 
@@ -56,8 +65,9 @@ public class MainGame extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 countdown--;
 
-                if (!isBattleActive && random.nextInt(300) > 200) {
+                if (!isBattleActive && random.nextInt(300) > 250) {
                     openRandomBattle();
+
                 }
 
                 if (countdown <= 0) {
@@ -142,6 +152,7 @@ public class MainGame extends JPanel {
 
     private void openRandomBattle() {
         gameTimer.stop();
+        backgroundMusic.stop();
         isBattleActive = true;
 
         BattleStage battleStage = new BattleStage(this);

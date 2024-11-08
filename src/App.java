@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 
 public class App extends JFrame {
-
+    AudioPlayer backgroundMusic;
     private URL imgBgURL = getClass().getResource("BgIntro.png");
     private Image imgBg = new ImageIcon(imgBgURL).getImage();
 
@@ -18,6 +18,8 @@ public class App extends JFrame {
     App() {
         Home h = new Home(imgBg, imgLogo, imgMdLogo);
         add(h);
+        backgroundMusic = new AudioPlayer("game-music.wav");
+        backgroundMusic.loop();
     }
 
     public static void main(String[] args) {
@@ -46,7 +48,7 @@ public class App extends JFrame {
             }
         }
 
-        public Home(Image imgBg, Image imgLogo, Image imgMdLogo) {
+        Home(Image imgBg, Image imgLogo, Image imgMdLogo) {
             this.imgBg = imgBg;
             this.imgLogo = imgLogo;
             this.imgMdLogo = imgMdLogo;
@@ -60,6 +62,7 @@ public class App extends JFrame {
                     parentFrame.setContentPane(new MainGame());
                     parentFrame.revalidate();
                     parentFrame.repaint();
+                    backgroundMusic.stop();
                 }
             });
 
